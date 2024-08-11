@@ -19,7 +19,9 @@ async function ExploreBlogs(props) {
 
 async function getBlogs() {
   try {
-    const res = await fetch(`${BASE_URL}/${VIEW_ALL_BLOG}`);
+    const res = await fetch(`${BASE_URL}/${VIEW_ALL_BLOG}`, {
+      cache: 'no-store'
+    });
     if (!res.ok) {
       throw new Error("Failed to fetch data");
     }
