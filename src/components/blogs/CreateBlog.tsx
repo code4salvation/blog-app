@@ -65,7 +65,7 @@ function CreateBlog(props) {
         tags: props?.data?.tags,
       });
     }
-  }, []);
+  }, [props?.data]);
 
   const handleChange = (e, newValue?) => {
     setFormData({
@@ -172,7 +172,7 @@ function CreateBlog(props) {
         }}
         renderTags={(value, props) =>
           value.map((option, index) => (
-            <Chip label={option} {...props({ index })} />
+            <Chip key={index} label={option} {...props({ index })} />
           ))
         }
         renderInput={(params) => (
