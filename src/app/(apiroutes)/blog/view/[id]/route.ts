@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
-import blogs from "../../../_data/blogs.json";
+import { Pool } from "pg";
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
 
 export async function GET(_request: Request, { params }) {
-    const id = params.id;
-    const blogData = blogs.posts.filter((item) => item.id === Number(id));
-    return NextResponse.json({ blog: blogData[0] });
+  try {
+    const client = await pool.connect();
+    const id = params?.id;
+    const results = await client.query('SELECT * FROM blogs WHERE id = $1', [id]);
+    client.release(); 
+    return NextResponse.json(results.rows[0], { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 });
+  }
 }

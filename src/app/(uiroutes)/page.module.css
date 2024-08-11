@@ -4,5 +4,12 @@
   gap: 2rem;
   padding: 6rem;
   min-height: 100vh;
-  background-color: #FFF;
+  background-color: #fff;
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+    padding-top: 6rem;
+  }
 }

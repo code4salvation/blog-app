@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <Box className={styles.main}>
       <h1>{blogApp.createBlog}</h1>
-      <CreateBlog></CreateBlog>
+      <CreateBlog page='create'></CreateBlog>
     </Box>
   );
 }

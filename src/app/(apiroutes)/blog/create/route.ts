@@ -1,22 +1,37 @@
-import path from "path";
-import fs from 'fs';
 import { NextResponse } from "next/server";
-import blogs from "../../_data/blogs.json";
+import { Pool } from 'pg';
+
 export async function POST(request: Request) {
     try {
-            if (!request.body) {
-                throw new Error('Bad Request : request body is missing');
-            }
-            const body = await request.json();
-            const filePath = path.join(process.cwd(), '..', '..', '_data', 'blogs.json');
-            const dirPath = path.dirname(filePath);
-            if (!fs.existsSync(dirPath)) {
-            fs.mkdirSync(dirPath, { recursive: true });
-            }
-            fs.writeFileSync(filePath, JSON.stringify({ posts : [...blogs.posts, {id: blogs.posts.length+1, ...body} ]}));
-            return NextResponse.json({ success: true, message: 'Data written to file' });
-        } catch (error) {
-            console.error('Error writing to file:', error);
-            return NextResponse.json({ success: false, message: 'Error writing to file' }, { status: 500 });
+        if (!request.body) {
+            throw new Error('Bad Request : request body is missing');
         }
+        
+        const pool = new Pool({
+            connectionString: process.env.POSTGRES_URL,
+        });
+        const client = await pool.connect();
+        const body = await request.json();
+        const maxId = await client.query(`SELECT MAX(id) FROM blogs;`)
+
+        const insertQuery = `
+      INSERT INTO blogs (id, title, body, publishedDate, author, tags, image)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+
+        await client.query(insertQuery, [
+            maxId.rows[0].max + 1,
+            body.title,
+            body.content,
+            body.date,
+            body.author,
+            JSON.stringify(body.tags),
+            body.image
+        ]);
+        client.release(); 
+        return NextResponse.json({ success: true, message: `Post created successfully` }, { status: 200 });
+    } catch (error) {
+        console.error('Error creating post', error);
+        return NextResponse.json({ success: false, message: 'Error creating post' }, { status: 500 });
+    }
 }

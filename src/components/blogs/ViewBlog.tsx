@@ -21,7 +21,7 @@ function ViewBlog(props) {
           {props?.data?.title}
         </Typography>
         <Typography variant="body2" component="p">
-          {`Published by ${props?.data?.author} on ${props?.data?.publishedDate}`}
+          {`Published by ${props?.data?.author} on ${props?.data?.publisheddate}`}
         </Typography>
       </Box>
       <Typography sx={{ fontSize: "1.5rem" }} variant="body1" component="p">

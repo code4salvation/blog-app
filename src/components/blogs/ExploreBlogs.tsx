@@ -4,10 +4,11 @@ import Link from "next/link";
 import { BASE_URL, VIEW_ALL_BLOG } from "@/constants/urls";
 
 async function ExploreBlogs(props) {
-  const data = await getBlogs();
+    const blogs = await getBlogs();
+
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-      {data?.blogs?.map((blog) => (
+      {blogs?.map((blog) => (
         <Link key={blog.id} href={`/view-blog/${blog.id}`}>
           <BlogCard page={props.page} data={blog}></BlogCard>
         </Link>
