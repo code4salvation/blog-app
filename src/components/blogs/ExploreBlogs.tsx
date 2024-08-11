@@ -8,7 +8,7 @@ async function ExploreBlogs(props) {
 
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-      {blogs?.map((blog) => (
+      {blogs?.length && blogs?.map((blog) => (
         <Link key={blog.id} href={`/view-blog/${blog.id}`}>
           <BlogCard page={props.page} data={blog}></BlogCard>
         </Link>
