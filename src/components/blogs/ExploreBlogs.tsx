@@ -28,6 +28,7 @@ async function getBlogs() {
     return res.json();
   } catch (error) {
     console.error(error);
+    return [];
   }
 }
 
