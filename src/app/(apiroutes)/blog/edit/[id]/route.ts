@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Pool } from 'pg';
-export const dynamic = 'force-dynamic';
+//export const dynamic = 'force-dynamic';
 export async function PUT(request: Request) {
     try {
         if (!request.body) {

@@ -1,6 +1,12 @@
 "use client";
 import { BASE_URL, CREATE_BLOG, EDIT_BLOG } from "@/constants/urls";
-import { Alert, Autocomplete, Button, Chip } from "@mui/material";
+import {
+  Alert,
+  Autocomplete,
+  Button,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
@@ -34,6 +40,7 @@ function CreateBlog(props) {
     tags: [],
   });
   const [successfullyPosted, setSuccessfullyPosted] = useState(false);
+  const [spinner, showSpinner] = useState(false);
 
   useEffect(() => {
     if (props?.data) {
@@ -76,6 +83,7 @@ function CreateBlog(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    showSpinner(true);
     createPost();
   };
 
@@ -118,6 +126,7 @@ function CreateBlog(props) {
           ),
         tags: [],
       });
+      showSpinner(false);
     }
   };
   return (
@@ -133,7 +142,7 @@ function CreateBlog(props) {
             setSuccessfullyPosted(false);
           }}
         >
-          Post Created Successfully
+          {`Post ${props.page === 'edit' ? 'Updated': 'Created'} Successfully`}
         </Alert>
       )}
       <TextField
@@ -195,6 +204,19 @@ function CreateBlog(props) {
       >
         Post
       </Button>
+      {spinner &&
+      (
+        <Box
+          sx={{
+            position: "fixed",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </Box>
   );
 }

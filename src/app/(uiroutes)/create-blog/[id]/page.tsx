@@ -1,12 +1,16 @@
+'use client';
 import Box from "@mui/material/Box";
 import styles from "../../page.module.css";
 import CreateBlog from "@/components/blogs/CreateBlog";
 import { blogApp } from "@/constants/constants";
-import { getBlog } from "@/utils/common";
+import { useContext } from "react";
+import { BlogContext } from "@/context/Blogs";
 
 export default async function Page({ params }) {
-  const blogData = await getBlog(params?.id);
-  
+  //This code was used for server component
+  //const blogData = await getBlog(params?.id);
+  const blogsContext = useContext(BlogContext);
+  const blogData = blogsContext?.blogs?.filter((item) => item?.id == params?.id)[0];
   return (
     <Box className={styles.main}>
       <h1>{blogApp.editBlog}</h1>
